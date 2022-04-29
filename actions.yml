@@ -1,0 +1,18 @@
+name: kuby-deploy-action
+description: Deploy your app using Kuby.
+inputs:
+  environment:
+    description: The Kuby environment to build, push, and deploy, eg. production, staging, etc.
+    required: true
+    default: production
+runs:
+  using: composite
+  steps:
+    - name: build
+      run: bundle exec kuby -e ${{ inputs.environment }} build
+      shell: bash
+    - name: push
+      run: bundle exec kuby -e ${{ inputs.environment }} push
+      shell: bash
+    - id: deploy
+      run: bundle exec kuby -e ${{ inputs.environment }} deploy
